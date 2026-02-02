@@ -87,7 +87,7 @@ interface Spec extends TurboModule {
 
     setUnlockDirectionAutomatic(lockData: string, success: null | ((direction: number) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
-    addPassageMode(mode: Object, weekDays: number[], monthDays: number[], startDate: number, endDate: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+    addPassageMode(mode: number, weekDays: number[], monthDays: number[], startDate: number, endDate: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
 
     clearAllPassageModes(lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
