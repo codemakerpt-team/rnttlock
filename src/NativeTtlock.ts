@@ -159,6 +159,18 @@ interface Spec extends TurboModule {
     setLiftWorkMode(workMode: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
     supportFunction(lockFunction: number, lockData: string, callback: (isSupport: boolean) => void) : void;
 
+    getAllValidPasscodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidCards(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidFingerprints(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidFaces(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidPalmVeins(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+//     getAllValidQRCodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
 
 
 

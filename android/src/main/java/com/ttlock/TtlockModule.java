@@ -92,6 +92,12 @@ import com.ttlock.bl.sdk.callback.GetUnlockDirectionCallback;
 import com.ttlock.bl.sdk.callback.GetWifiInfoCallback;
 import com.ttlock.bl.sdk.callback.GetWifiPowerSavingTimesCallback;
 import com.ttlock.bl.sdk.callback.InitLockCallback;
+import com.ttlock.bl.sdk.callback.GetAllFacesCallback;
+import com.ttlock.bl.sdk.callback.GetAllPalmVeinsCallback;
+import com.ttlock.bl.sdk.callback.GetAllValidFingerprintCallback;
+import com.ttlock.bl.sdk.callback.GetAllValidICCardCallback;
+import com.ttlock.bl.sdk.callback.GetAllValidPasscodeCallback;
+//import com.ttlock.bl.sdk.callback.GetAllValidQRCodesCallback;
 import com.ttlock.bl.sdk.callback.ModifyAdminPasscodeCallback;
 import com.ttlock.bl.sdk.callback.ModifyFacePeriodCallback;
 import com.ttlock.bl.sdk.callback.ModifyFingerprintPeriodCallback;
@@ -2460,6 +2466,132 @@ public class TtlockModule extends NativeTtlockSpec {
         boolean support = FeatureValueUtil.isSupportFeature(lockData, (int) function);
         callback.invoke(support);
     }
+
+    @ReactMethod
+    public void getAllValidPasscodes(String lockData, Callback successCallback, Callback fail) {
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getAllValidPasscodes(lockData, null, new GetAllValidPasscodeCallback() {
+                    @Override
+                    public void onGetAllValidPasscodeSuccess(String passcodeStr) {
+                        successCallback.invoke(passcodeStr);
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAllValidCards(String lockData, Callback successCallback, Callback fail) {
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getAllValidICCards(lockData, null, new GetAllValidICCardCallback() {
+                    @Override
+                    public void onGetAllValidICCardSuccess(String cardDataStr) {
+                        successCallback.invoke(cardDataStr);
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAllValidFingerprints(String lockData, Callback successCallback, Callback fail) {
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getAllValidFingerprints(lockData, null, new GetAllValidFingerprintCallback() {
+                    @Override
+                    public void onGetAllFingerprintsSuccess(String fingerprintStr) {
+                        successCallback.invoke(fingerprintStr);
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAllValidFaces(String lockData, Callback successCallback, Callback fail) {
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getAllValidFaces(lockData, new GetAllFacesCallback() {
+                    @Override
+                    public void onGetAllFaces(String facesStr) {
+                        successCallback.invoke(facesStr);
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAllValidPalmVeins(String lockData, Callback successCallback, Callback fail) {
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getAllValidPalmVeins(lockData, new GetAllPalmVeinsCallback() {
+                    @Override
+                    public void onGetAllPalmVeins(String palmVeinsStr) {
+                        successCallback.invoke(palmVeinsStr);
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+//    @ReactMethod
+//    public void getAllValidQRCodes(String lockData, Callback successCallback, Callback fail) {
+//        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+//            if (success) {
+//                TTLockClient.getDefault().getAllValidQRCodes(lockData, new GetAllValidQRCodesCallback() {
+//                    @Override
+//                    public void onGetAllValidQRCodesSuccess(String qrCodesStr) {
+//                        successCallback.invoke(qrCodesStr);
+//                    }
+//
+//                    @Override
+//                    public void onFail(LockError error) {
+//                        lockErrorCallback(error, fail);
+//                    }
+//                });
+//            } else {
+//                noPermissionCallback(fail);
+//            }
+//        });
+//    }
 
     private void lockErrorCallback(LockError lockError, Callback fail) {
         if (fail != null) {

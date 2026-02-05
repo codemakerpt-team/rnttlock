@@ -763,6 +763,78 @@ export class Ttlock {
     NativeTTLock.supportFunction(lockFunction, lockData, callback);
   }
 
+  /**
+   * Get all valid passcodes
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidPasscodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidPasscodes(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid cards
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidCards(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidCards(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid fingerprints
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidFingerprints(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidFingerprints(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid faces
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidFaces(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidFaces(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid palm veins
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidPalmVeins(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidPalmVeins(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid QR codes
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidQRCodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidQRCodes(lockData, success, fail);
+  }
+
 
   /**
    * Monitor phone's Bluetooth status
