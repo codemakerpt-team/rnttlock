@@ -2526,14 +2526,14 @@ public class TtlockModule extends NativeTtlockSpec {
     }
 
     @ReactMethod
-    public void setLightTime(int light, String lockData, Callback successCallback, Callback fail) {
+    public void setLightTime(double light, String lockData, Callback successCallback, Callback fail) {
         if (TextUtils.isEmpty(lockData)) {
             lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
             return;
         }
         PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
             if (success) {
-                TTLockClient.getDefault().setLightTime(light, lockData, new SetLightTimeCallback() {
+                TTLockClient.getDefault().setLightTime((int) light, lockData, new SetLightTimeCallback() {
                     @Override
                     public void onSetLightTimeSuccess() {
                         successCallback.invoke();
@@ -2558,9 +2558,9 @@ public class TtlockModule extends NativeTtlockSpec {
         }
         PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
             if (success) {
-                TTLockClient.getDefault().getLightTime(lockData, new GetLightTimeCallback() {
+                TTLockClient.getDefault().getLightTime(lockData, new GetLockTimeCallback() {
                     @Override
-                    public void onGetLightTimeSuccess(int time) {
+                    public void onGetLockTimeSuccess(long time) {
                         successCallback.invoke(time);
                     }
 
