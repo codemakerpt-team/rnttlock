@@ -1070,7 +1070,8 @@ public class TtlockModule extends NativeTtlockSpec {
     recoverLockData(GsonUtil.toJson(recoveryDataList), RecoveryDataType.IC, lockData, successCallback, fail);
   }
 
-  private void recoverLockData(String recoveryDataJson, double recoveryType, String lockData, Callback successCallback, Callback fail) {
+  @ReactMethod
+  public void recoverLockData(String recoveryDataJson, double recoveryType, String lockData, Callback successCallback, Callback fail) {
     PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
       if (success) {
         TTLockClient.getDefault().recoverLockData(recoveryDataJson, (int) recoveryType, lockData, new RecoverLockDataCallback() {
@@ -2559,8 +2560,8 @@ public class TtlockModule extends NativeTtlockSpec {
             if (success) {
                 TTLockClient.getDefault().getLightTime(lockData, new GetLightTimeCallback() {
                     @Override
-                    public void onGetLockTimeSuccess(long lockTimestamp) {
-                        successCallback.invoke(String.valueOf(lockTimestamp));
+                    public void onGetLightTimeSuccess(int time) {
+                        successCallback.invoke(time);
                     }
 
                     @Override
@@ -2575,28 +2576,11 @@ public class TtlockModule extends NativeTtlockSpec {
     }
 
     @ReactMethod
-    public void recoverLockData(String lockData, int paramInt, String lockData2, Callback successCallback, Callback fail) {
-        if (TextUtils.isEmpty(lockData) || TextUtils.isEmpty(lockData2)) {
-            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
-            return;
+    public void enterUpgradeMode(String lockData, Callback successCallback, Callback fail) {
+        // enterUpgradeMode is only supported on iOS
+        if (fail != null) {
+            fail.invoke(-1, "enterUpgradeMode is not supported on Android");
         }
-        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
-            if (success) {
-                TTLockClient.getDefault().recoverLockData(lockData, paramInt, lockData2, new RecoverLockDataCallback() {
-                    @Override
-                    public void onRecoveryDataSuccess(int lock) {
-                        successCallback.invoke(String.valueOf(lock));
-                    }
-
-                    @Override
-                    public void onFail(LockError error) {
-                        lockErrorCallback(error, fail);
-                    }
-                });
-            } else {
-                noPermissionCallback(fail);
-            }
-        });
     }
 
     @ReactMethod
