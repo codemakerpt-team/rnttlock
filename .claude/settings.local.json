@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find 'c:\\\\Users\\\\André Capelli\\\\Documents\\\\GIT Codemaker\\\\rnttlock\\\\android' -name *.java -o -name *.kt)",
+      "Bash(find 'c:\\\\Users\\\\André Capelli\\\\Documents\\\\GIT Codemaker\\\\rnttlock\\\\ios' -name *.swift -o -name *.m -o -name *.h)",
+      "Bash(yarn)",
+      "Bash(npm install:*)",
+      "Bash(rm -rf lib/typescript)",
+      "Bash(npx bob:*)"
+    ]
+  }
+}
