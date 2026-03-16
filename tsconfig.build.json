@@ -1,4 +1,10 @@
 {
   "extends": "./tsconfig",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
   "exclude": ["example", "lib"]
 }

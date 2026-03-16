@@ -747,6 +747,72 @@ RCT_EXPORT_METHOD(setLiftWorkMode:(int) workMode lockData:(NSString *)lockData s
 }
 
 
+RCT_EXPORT_METHOD(setHotelData:(NSDictionary *)hotelDataDict lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    NSString *hotelInfo = hotelDataDict[@"hotelInfo"] ?: @"";
+    int buildingNumber = [hotelDataDict[@"buildingNumber"] intValue];
+    int floorNumber = [hotelDataDict[@"floorNumber"] intValue];
+    [TTLock setHotelDataWithHotelInfo:hotelInfo buildingNumber:buildingNumber floorNumber:floorNumber lockData:lockData success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(setHotelCardSector:(NSString *)sector lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock setHotelCardSector:sector lockData:lockData success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(setLightTime:(int)time lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock setLightTime:time lockData:lockData success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(getLightTime:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock getLightTimeWithLockData:lockData success:^(int time) {
+        [Ttlock reseponseSuccess:@(time) success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(recoverLockData:(NSString *)lockData paramInt:(int)paramInt lockData2:(NSString *)lockData2 success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock recoverLockDataWithLockData:lockData type:paramInt newLockData:lockData2 success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(verifyLock:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock verifyLockWithLockData:lockData success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
+RCT_EXPORT_METHOD(enterUpgradeMode:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+    [TTLock enterUpgradeModeWithLockData:lockData success:^{
+        [Ttlock reseponseSuccess:nil success:success];
+    } failure:^(TTError errorCode, NSString *errorMsg) {
+        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+    }];
+}
+
 RCT_EXPORT_METHOD(supportFunction:(int)fuction lockData:(NSString *)lockData callback:(RCTResponseSenderBlock)callback)
 {
     BOOL isSupport = [TTUtil lockFeatureValue:lockData suportFunction:(TTLockFeatureValue)fuction];

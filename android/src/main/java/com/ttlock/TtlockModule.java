@@ -106,7 +106,12 @@ import com.ttlock.bl.sdk.callback.ScanLockCallback;
 import com.ttlock.bl.sdk.callback.ScanWifiCallback;
 import com.ttlock.bl.sdk.callback.SetAutoLockingPeriodCallback;
 import com.ttlock.bl.sdk.callback.SetDoorSensorAlertTimeCallback;
+import com.ttlock.bl.sdk.callback.SetHotelCardSectorCallback;
+import com.ttlock.bl.sdk.callback.SetHotelDataCallback;
 import com.ttlock.bl.sdk.callback.SetLiftControlableFloorsCallback;
+import com.ttlock.bl.sdk.callback.SetLightTimeCallback;
+import com.ttlock.bl.sdk.callback.GetLightTimeCallback;
+import com.ttlock.bl.sdk.callback.VerifyLockCallback;
 import com.ttlock.bl.sdk.callback.SetLiftWorkModeCallback;
 import com.ttlock.bl.sdk.callback.SetLockConfigCallback;
 import com.ttlock.bl.sdk.callback.SetLockSoundWithSoundVolumeCallback;
@@ -124,6 +129,7 @@ import com.ttlock.bl.sdk.entity.AccessoryType;
 import com.ttlock.bl.sdk.entity.ActivateLiftFloorsResult;
 import com.ttlock.bl.sdk.entity.AutoUnlockDirection;
 import com.ttlock.bl.sdk.entity.ControlLockResult;
+import com.ttlock.bl.sdk.entity.HotelData;
 import com.ttlock.bl.sdk.entity.FaceCollectionStatus;
 import com.ttlock.bl.sdk.entity.IpSetting;
 import com.ttlock.bl.sdk.entity.LockError;
@@ -2452,6 +2458,171 @@ public class TtlockModule extends NativeTtlockSpec {
       }
     });
   }
+
+    @ReactMethod
+    public void setHotelData(ReadableMap hotelDataMap, String lockData, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(lockData)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        HotelData hotelData = convertMapToHotelData(hotelDataMap);
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().setHotelData(hotelData, lockData, new SetHotelDataCallback() {
+                    @Override
+                    public void onSetHotelDataSuccess() {
+                        successCallback.invoke();
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setHotelCardSector(String cardSector, String lockData, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(cardSector) || TextUtils.isEmpty(lockData)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().setHotelCardSector(cardSector, lockData, new SetHotelCardSectorCallback() {
+                    @Override
+                    public void onSetHotelCardSectorSuccess() {
+                        successCallback.invoke();
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    private HotelData convertMapToHotelData(ReadableMap map) {
+        HotelData hotelData = new HotelData();
+        if (map.hasKey("buildingNumber")) {
+            hotelData.setBuildingNumber(map.getInt("buildingNumber"));
+        }
+        if (map.hasKey("floorNumber")) {
+            hotelData.setFloorNumber(map.getInt("floorNumber"));
+        }
+        if (map.hasKey("hotelInfo")) {
+            hotelData.setHotelInfo(map.getString("hotelInfo"));
+        }
+        return hotelData;
+    }
+
+    @ReactMethod
+    public void setLightTime(int light, String lockData, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(lockData)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().setLightTime(light, lockData, new SetLightTimeCallback() {
+                    @Override
+                    public void onSetLightTimeSuccess() {
+                        successCallback.invoke();
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getLightTime(String lockData, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(lockData)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().getLightTime(lockData, new GetLightTimeCallback() {
+                    @Override
+                    public void onGetLockTimeSuccess(long lockTimestamp) {
+                        successCallback.invoke(String.valueOf(lockTimestamp));
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void recoverLockData(String lockData, int paramInt, String lockData2, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(lockData) || TextUtils.isEmpty(lockData2)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().recoverLockData(lockData, paramInt, lockData2, new RecoverLockDataCallback() {
+                    @Override
+                    public void onRecoveryDataSuccess(int lock) {
+                        successCallback.invoke(String.valueOf(lock));
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void verifyLock(String lockData, Callback successCallback, Callback fail) {
+        if (TextUtils.isEmpty(lockData)) {
+            lockErrorCallback(LockError.DATA_FORMAT_ERROR, fail);
+            return;
+        }
+        PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
+            if (success) {
+                TTLockClient.getDefault().verifyLock(lockData, new VerifyLockCallback() {
+                    @Override
+                    public void onVerifySuccess() {
+                        successCallback.invoke();
+                    }
+
+                    @Override
+                    public void onFail(LockError error) {
+                        lockErrorCallback(error, fail);
+                    }
+                });
+            } else {
+                noPermissionCallback(fail);
+            }
+        });
+    }
 
     @ReactMethod
     public void getBluetoothState(Callback callback) {

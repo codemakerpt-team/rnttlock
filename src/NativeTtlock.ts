@@ -157,6 +157,20 @@ interface Spec extends TurboModule {
     activateLiftFloors(floors: string, lockData: string, success: null | ((dataArray: any[]) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
     setLiftControlEnableFloors(floors: string, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
     setLiftWorkMode(workMode: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+    setHotelData(hotelData: Object, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    setHotelCardSector(cardSector: string, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    setLightTime(time: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getLightTime(lockData: string, success: null | ((time: number) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    recoverLockData(lockData: string, paramInt: number, lockData2: string, success: null | ((lock: number) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    verifyLock(lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    enterUpgradeMode(lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
     supportFunction(lockFunction: number, lockData: string, callback: (isSupport: boolean) => void) : void;
 
 

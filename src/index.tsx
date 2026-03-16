@@ -759,6 +759,128 @@ export class Ttlock {
     NativeTTLock.setLiftWorkMode(workMode, lockData, success, fail);
   }
 
+  /**
+   * Set Hotel Information on Lock
+   * @param hotelData HotelData
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static setHotelData(
+    hotelData: HotelData,
+    lockData: string,
+    success: null | (() => void),
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.setHotelData(hotelData, lockData, success, fail);
+  }
+
+  /**
+   * Set Hotel Sector for Lock
+   * @param sectorCard string
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static setHotelCardSector(
+    sectorCard: string,
+    lockData: string,
+    success: null | (() => void),
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.setHotelCardSector(sectorCard, lockData, success, fail);
+  }
+
+  /**
+   * Set Light Time for Lock
+   * @param time number
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static setLightTime(
+    time: number,
+    lockData: string,
+    success: null | (() => void),
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.setLightTime(time, lockData, success, fail);
+  }
+
+  /**
+   * Get Light Time for Lock
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static getLightTime(
+    lockData: string,
+    success: (time: number) => void,
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.getLightTime(lockData, success, fail);
+  }
+
+  /**
+   * Recover Lock Data
+   * @param lockData string
+   * @param paramInt number
+   * @param lockData2 string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static recoverLockData(
+    lockData: string,
+    paramInt: number,
+    lockData2: string,
+    success: (lock: number) => void,
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.recoverLockData(lockData, paramInt, lockData2, success, fail);
+  }
+
+  /**
+   * Verify Lock
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static verifyLock(
+    lockData: string,
+    success: null | (() => void),
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.verifyLock(lockData, success, fail);
+  }
+
+  /**
+   * Enter Upgrade Mode
+   * @param lockData string
+   * @param success successful callback
+   * @param fail failed callback
+   */
+  static enterUpgradeMode(
+    lockData: string,
+    success: null | (() => void),
+    fail: null | ((errorCode: LockErrorCode, description: string) => void)
+  ) {
+    fail = fail || this.defaultCallback;
+    success = success || this.defaultCallback;
+    NativeTTLock.enterUpgradeMode(lockData, success, fail);
+  }
+
     static supportFunction(lockFunction: LockFunction, lockData: string, callback: (isSupport: boolean) => void) {
     NativeTTLock.supportFunction(lockFunction, lockData, callback);
   }
@@ -1418,4 +1540,10 @@ export interface CycleDateParam {
   weekDay: number,
   startTime: number,
   endTime: number
+}
+
+export interface HotelData {
+  buildingNumber: number;
+  floorNumber: number;
+  hotelInfo: string;
 }

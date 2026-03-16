@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/**)",
+      "Bash(find '/c/Users/André Capelli/Documents/GIT Codemaker/rnttlock/ios' -name *.framework -type d)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
