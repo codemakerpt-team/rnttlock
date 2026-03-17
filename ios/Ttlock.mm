@@ -786,23 +786,23 @@ RCT_EXPORT_METHOD(getLightTime:(NSString *)lockData success:(RCTResponseSenderBl
     }];
 }
 
-RCT_EXPORT_METHOD(recoverLockData:(NSString *)lockData paramInt:(int)paramInt lockData2:(NSString *)lockData2 success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
-{
-    [TTLock recoverLockDataWithLockData:lockData type:paramInt newLockData:lockData2 success:^{
-        [Ttlock reseponseSuccess:nil success:success];
-    } failure:^(TTError errorCode, NSString *errorMsg) {
-        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
-    }];
-}
+// RCT_EXPORT_METHOD(recoverLockData:(NSString *)lockData paramInt:(int)paramInt lockData2:(NSString *)lockData2 success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+// {
+//     [TTLock recoverLockDataWithLockData:lockData type:paramInt newLockData:lockData2 success:^{
+//         [Ttlock reseponseSuccess:nil success:success];
+//     } failure:^(TTError errorCode, NSString *errorMsg) {
+//         [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+//     }];
+// }
 
-RCT_EXPORT_METHOD(verifyLock:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
-{
-    [TTLock verifyLockWithLockData:lockData success:^{
-        [Ttlock reseponseSuccess:nil success:success];
-    } failure:^(TTError errorCode, NSString *errorMsg) {
-        [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
-    }];
-}
+// RCT_EXPORT_METHOD(verifyLock:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+// {
+//     [TTLock verifyLockWithLockData:lockData success:^{
+//         [Ttlock reseponseSuccess:nil success:success];
+//     } failure:^(TTError errorCode, NSString *errorMsg) {
+//         [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+//     }];
+// }
 
 RCT_EXPORT_METHOD(enterUpgradeMode:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
 {
