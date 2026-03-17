@@ -683,12 +683,18 @@ public class TtlockModule extends NativeTtlockSpec {
             }
             gatewayInfo.userPwd = readableMap.getString(TTGatewayFieldConstant.TTLOCK_LOGIN_PASSWORD);
             String serverIp = readableMap.getString(TTGatewayFieldConstant.SERVER_IP);
-            String serverPort = readableMap.getString(TTGatewayFieldConstant.SERVER_PORT);
             if (!TextUtils.isEmpty(serverIp)) {
               gatewayInfo.setServer(serverIp);
             }
-            if (!TextUtils.isEmpty(serverPort)) {
-              gatewayInfo.setPort(Integer.valueOf(serverPort));
+            if (readableMap.hasKey(TTGatewayFieldConstant.SERVER_PORT)) {
+              try {
+                gatewayInfo.setPort((int) readableMap.getDouble(TTGatewayFieldConstant.SERVER_PORT));
+              } catch (Exception e) {
+                String serverPort = readableMap.getString(TTGatewayFieldConstant.SERVER_PORT);
+                if (!TextUtils.isEmpty(serverPort)) {
+                  gatewayInfo.setPort(Integer.valueOf(serverPort));
+                }
+              }
             }
             if (readableMap.hasKey(TTGatewayFieldConstant.IP_SETTING_TYPE)) {
               int ipSettingType = readableMap.getInt(TTGatewayFieldConstant.IP_SETTING_TYPE);

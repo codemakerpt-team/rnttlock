@@ -1503,7 +1503,7 @@ export interface InitGatewayParam {
   ttLockUid: number,
   ttLockLoginPassword: string,
   serverIp: string | undefined,
-  serverPort: number | undefined,
+  serverPort: string | number | undefined,
 
   ipSettingType: number | undefined,
   ipAddress: string | undefined,
