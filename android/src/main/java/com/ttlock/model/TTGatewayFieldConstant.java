@@ -23,6 +23,8 @@ public class TTGatewayFieldConstant {
     public static final String WIFI_PASSWORD = "wifiPassword";
     public static final String TTLOCK_UID = "ttLockUid";
     public static final String TTLOCK_LOGIN_PASSWORD = "ttLockLoginPassword";
+    public static final String SERVER_IP = "serverIp";
+    public static final String SERVER_PORT = "serverPort";
 
     public static final String MODEL_NUM = "modelNum";
     public static final String HARDWARE_REVISION = "hardwareRevision";
