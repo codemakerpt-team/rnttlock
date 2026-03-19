@@ -1536,18 +1536,18 @@ public class TtlockModule extends NativeTtlockSpec {
     }
 
     @ReactMethod
-    public void addPassageMode(int type, ReadableArray weekly, ReadableArray monthly, int startDate, int endDate, String lockData, Callback successCallback, Callback fail) {
+    public void addPassageMode(double type, ReadableArray weekly, ReadableArray monthly, double startDate, double endDate, String lockData, Callback successCallback, Callback fail) {
       PermissionUtils.doWithConnectPermission(getCurrentActivity(), success -> {
         if (success) {
           PassageModeConfig passageModeConfig = new PassageModeConfig();
-          passageModeConfig.setModeType(type == 0 ? PassageModeType.Weekly : PassageModeType.Monthly);
+          passageModeConfig.setModeType(((int) type) == 0 ? PassageModeType.Weekly : PassageModeType.Monthly);
           if (passageModeConfig.getModeType() == PassageModeType.Weekly) {
             passageModeConfig.setRepeatWeekOrDays(Utils.readableArray2IntJson(weekly));
           } else {
             passageModeConfig.setRepeatWeekOrDays(Utils.readableArray2IntJson(monthly));
           }
-          passageModeConfig.setStartDate(startDate);
-          passageModeConfig.setEndDate(endDate);
+          passageModeConfig.setStartDate((int) startDate);
+          passageModeConfig.setEndDate((int) endDate);
 
           LogUtil.d("weekdays:" + passageModeConfig.getRepeatWeekOrDays());
 
