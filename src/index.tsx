@@ -2,7 +2,9 @@ import NativeTTLock from './NativeTtlock';
 
 import { NativeEventEmitter, NativeModules } from 'react-native';
 
-const eventEmitter = new NativeEventEmitter(NativeModules.Ttlock);
+const eventEmitter = new NativeEventEmitter(NativeModules.Ttlock) as NativeEventEmitter & {
+  addListener: (event: string, callback: (...args: any[]) => void) => void;
+};
 
 export class Ttlock {
 
@@ -33,6 +35,15 @@ export class Ttlock {
   static stopScan() {
     NativeTTLock.stopScan();
     eventEmitter.removeAllListeners(TTLockEvent.SCAN_LOCK);
+  }
+
+  /**
+   * Cancel an active or pending connection to the lock.
+   * This is non-blocking; pending BLE commands may or may not complete.
+   * @param lockMac
+   */
+  static cancelOperationsWithLockMac(lockMac: string) {
+    NativeTTLock.cancelOperationsWithLockMac(lockMac);
   }
 
 
@@ -637,7 +648,6 @@ export class Ttlock {
     }, fail);
   }
 
-
   static getWifiPowerSavingTime(lockData: string, success: ((timesJsonString: undefined | string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
     success = success || this.defaultCallback;
     fail = fail || this.defaultCallback;
@@ -955,6 +965,78 @@ export class Ttlock {
     NativeTTLock.supportFunction(lockFunction, lockData, callback);
   }
 
+  /**
+   * Get all valid passcodes
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidPasscodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidPasscodes(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid cards
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidCards(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidCards(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid fingerprints
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidFingerprints(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidFingerprints(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid faces
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidFaces(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidFaces(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid palm veins
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  static getAllValidPalmVeins(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+    success = success || this.defaultCallback;
+    fail = fail || this.defaultCallback;
+    NativeTTLock.getAllValidPalmVeins(lockData, success, fail);
+  }
+
+  /**
+   * Get all valid QR codes
+   * @param lockData
+   * @param success
+   * @param fail
+   */
+  // static getAllValidQRCodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: LockErrorCode, description: string) => void)) {
+  //   success = success || this.defaultCallback;
+  //   fail = fail || this.defaultCallback;
+  //   NativeTTLock.getAllValidQRCodes(lockData, success, fail);
+  // }
+
 
   /**
    * Monitor phone's Bluetooth status
@@ -1269,7 +1351,9 @@ export enum LockFunction {
   Wifi = 56,
   WifiStaticIP = 58,
   PasscodeKeyNumber = 60,
-  AutoSetUnlockDirection = 81
+  AutoSetUnlockDirection = 81,
+  WifiFirmwareVersion = 104,
+  MotorDriveBoardFirmwareVersion = 122
 }
 
 export enum LockRecordType {

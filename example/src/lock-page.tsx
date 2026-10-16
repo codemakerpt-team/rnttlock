@@ -36,6 +36,13 @@ const getLockSupportOperationList = (lockData: string) => {
     { lockOperation: "Delete face", lockFunctionValue: LockFunction.Face },
     { lockOperation: "Clear all face", lockFunctionValue: LockFunction.Face },
 
+    { lockOperation: "Get all valid passcodes", lockFunctionValue: LockFunction.Passcode },
+    { lockOperation: "Get all valid cards", lockFunctionValue: LockFunction.IcCard },
+    { lockOperation: "Get all valid fingerprints", lockFunctionValue: LockFunction.Fingerprint },
+    { lockOperation: "Get all valid faces", lockFunctionValue: LockFunction.Face },
+    { lockOperation: "Get all valid palm veins", lockFunctionValue: null },
+//     { lockOperation: "Get all valid QR codes", lockFunctionValue: null },
+
 
     { lockOperation: "Get lock automatic locking periodic time", lockFunctionValue: LockFunction.AutoLock },
     { lockOperation: "Set lock automatic locking periodic time", lockFunctionValue: LockFunction.AutoLock },
@@ -371,7 +378,36 @@ const operationClick = (lockOperation: string, lockData: string, lockMac: string
       faceNumber = undefined;
     }, failedCallback);
   }
-
+  else if (lockOperation === "Get all valid passcodes") {
+    Ttlock.getAllValidPasscodes(lockData, (data: string) => {
+      successCallback("Get all valid passcodes success: " + data);
+    }, failedCallback);
+  }
+  else if (lockOperation === "Get all valid cards") {
+    Ttlock.getAllValidCards(lockData, (data: string) => {
+      successCallback("Get all valid cards success: " + data);
+    }, failedCallback);
+  }
+  else if (lockOperation === "Get all valid fingerprints") {
+    Ttlock.getAllValidFingerprints(lockData, (data: string) => {
+      successCallback("Get all valid fingerprints success: " + data);
+    }, failedCallback);
+  }
+  else if (lockOperation === "Get all valid faces") {
+    Ttlock.getAllValidFaces(lockData, (data: string) => {
+      successCallback("Get all valid faces success: " + data);
+    }, failedCallback);
+  }
+  else if (lockOperation === "Get all valid palm veins") {
+    Ttlock.getAllValidPalmVeins(lockData, (data: string) => {
+      successCallback("Get all valid palm veins success: " + data);
+    }, failedCallback);
+  }
+  // else if (lockOperation === "Get all valid QR codes") {
+  //   Ttlock.getAllValidQRCodes(lockData, (data: string) => {
+  //     successCallback("Get all valid QR codes success: " + data);
+  //   }, failedCallback);
+  // }
 
   else if (lockOperation === "Get lock automatic locking periodic time") {
     Ttlock.getLockAutomaticLockingPeriodicTime(lockData, (currentTime: number, maxTime: number, minTime: number) => {
@@ -549,7 +585,7 @@ const operationClick = (lockOperation: string, lockData: string, lockMac: string
     }, failedCallback)
   }
   else if (lockOperation === "Wifi lock config server") {
-    Ttlock.configServer("121.196.45.100", "4999", lockData, () => {
+    Ttlock.configServer("121.196.45.xxxx", "xx99", lockData, () => {
       let text = "config lock wifi ip address success";
       successCallback(text);
     }, failedCallback)
@@ -584,7 +620,7 @@ const operationClick = (lockOperation: string, lockData: string, lockMac: string
   }
 
   else if (lockOperation === "Wifi lock get power saving time") {
-    
+
     Ttlock.getWifiPowerSavingTime(lockData, (configStr: undefined | string) => {
       let text = "wifi get power saving time: " + configStr;
       successCallback(text);
@@ -604,7 +640,7 @@ const operationClick = (lockOperation: string, lockData: string, lockMac: string
       successCallback(text);
     }, failedCallback);
   }
-  
+
 // { lockOperation: "", lockFunctionValue: null },
 //     { lockOperation: "", lockFunctionValue: null },
 //     { lockOperation: "", lockFunctionValue: null },
@@ -667,7 +703,6 @@ else if (lockOperation === "Get unauthorized attempt alert") {
 
 
 
-    
 //   else if (lockOperation === "Lock upgrade") {
 //     Toast.hidden()
 //     navigation.navigate("LockUpgradePage", {lockData: lockData, lockMac: lockMac});

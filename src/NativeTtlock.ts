@@ -7,6 +7,7 @@ interface Spec extends TurboModule {
   getBluetoothState(callback: (state: number) => void): void;
   startScan(): void;
   stopScan(): void;
+  cancelOperationsWithLockMac(lockMac: string): void;
 
 
   initLock(object: Object, success: ((lockData: string) => void), fail: ((errorCode: number, description: string) => void)) : void;
@@ -131,8 +132,6 @@ interface Spec extends TurboModule {
 
     getWifiInfo(lockData: string, success: null | ((data: any[]) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
-
-
     getWifiPowerSavingTime(lockData: string, success: ((timesJsonString: undefined | string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
 
@@ -187,6 +186,18 @@ interface Spec extends TurboModule {
     getUnauthorizedAttemptAlert(lockData: string, success: null | ((alert: Object) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
     supportFunction(lockFunction: number, lockData: string, callback: (isSupport: boolean) => void) : void;
+
+    getAllValidPasscodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidCards(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidFingerprints(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidFaces(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    getAllValidPalmVeins(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+   //  getAllValidQRCodes(lockData: string, success: null | ((data: string) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
 
 

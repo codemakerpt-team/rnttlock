@@ -107,6 +107,11 @@ RCT_EXPORT_METHOD(stopScan)
     [TTLock stopScan];
 }
 
+RCT_EXPORT_METHOD(cancelOperationsWithLockMac:(NSString *)lockMac)
+{
+    [TTLock cancelOperationsWithLockMac:lockMac];
+}
+
 
 
 RCT_EXPORT_METHOD(initLock:(NSDictionary *)dict success:(RCTResponseSenderBlock)successfulBlock fail:(RCTResponseSenderBlock)faile)
@@ -815,12 +820,12 @@ RCT_EXPORT_METHOD(enterUpgradeMode:(NSString *)lockData success:(RCTResponseSend
 
 RCT_EXPORT_METHOD(setPowerSaverWorkMode:(int)powerSaverWorkMode lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
 {
-  TTPowerSaverWorkMode workMode;
-  if (![Ttlock powerSaverWorkModeFromRNIndex:powerSaverWorkMode workMode:&workMode]) {
+  NSNumber *workModeNumber = [Ttlock powerSaverWorkModeFromRN:powerSaverWorkMode];
+  if (workModeNumber == nil) {
     [Ttlock responseFail:LOCK code:TTErrorInvalidParameter errorMessage:nil fail:fail];
     return;
   }
-  [TTLock setPowerSaverWorkMode:workMode lockData:lockData success:^{
+  [TTLock setPowerSaverWorkMode:(TTPowerSaverWorkMode)workModeNumber.intValue lockData:lockData success:^{
     [Ttlock reseponseSuccess:nil success:success];
   } failure:^(TTError errorCode, NSString *errorMsg) {
     [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
@@ -830,11 +835,11 @@ RCT_EXPORT_METHOD(setPowerSaverWorkMode:(int)powerSaverWorkMode lockData:(NSStri
 
 RCT_EXPORT_METHOD(setPowerSaverWorkModes:(NSArray *)powerSaverWorkModes lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
 {
-  NSMutableArray<NSNumber *> *workModes = [NSMutableArray array];
-  for (NSNumber *modeNumber in powerSaverWorkModes) {
-    TTPowerSaverWorkMode workMode;
-    if ([Ttlock powerSaverWorkModeFromRNIndex:modeNumber.intValue workMode:&workMode]) {
-      [workModes addObject:@(workMode)];
+  NSMutableArray *workModes = [NSMutableArray array];
+  for (NSNumber *mode in powerSaverWorkModes) {
+    NSNumber *workModeNumber = [Ttlock powerSaverWorkModeFromRN:mode.intValue];
+    if (workModeNumber != nil) {
+      [workModes addObject:workModeNumber];
     }
   }
   [TTLock setPowerSaverWorkModes:workModes lockData:lockData success:^{
@@ -845,11 +850,21 @@ RCT_EXPORT_METHOD(setPowerSaverWorkModes:(NSArray *)powerSaverWorkModes lockData
 }
 
 
+RCT_EXPORT_METHOD(setPowerSaverControlableLock:(NSString *)controlableLockMac lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
+{
+  [TTLock setPowerSaverControlableLockWithLockMac:controlableLockMac lockData:lockData success:^{
+    [Ttlock reseponseSuccess:nil success:success];
+  } failure:^(TTError errorCode, NSString *errorMsg) {
+    [Ttlock responseFail:LOCK code:errorCode errorMessage:errorMsg fail:fail];
+  }];
+}
+
+
 RCT_EXPORT_METHOD(setUnauthorizedAttemptAlert:(int)attemptAlertCount lockoutDuration:(int)lockoutDuration unlockModes:(NSArray *)unlockModes lockData:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
 {
-  NSMutableArray<NSNumber *> *modes = [NSMutableArray array];
-  for (NSNumber *modeNumber in unlockModes) {
-    [modes addObject:@(modeNumber.intValue)];
+  NSMutableArray *modes = [NSMutableArray array];
+  for (NSNumber *mode in unlockModes) {
+    [modes addObject:@(mode.intValue)];
   }
   [TTLock setUnauthorizedAttemptAlertWithUnlockModes:modes attemptAlertCount:attemptAlertCount lockoutDuration:lockoutDuration lockData:lockData success:^{
     [Ttlock reseponseSuccess:nil success:success];
@@ -862,10 +877,14 @@ RCT_EXPORT_METHOD(setUnauthorizedAttemptAlert:(int)attemptAlertCount lockoutDura
 RCT_EXPORT_METHOD(getUnauthorizedAttemptAlert:(NSString *)lockData success:(RCTResponseSenderBlock)success fail:(RCTResponseSenderBlock)fail)
 {
   [TTLock getUnauthorizedAttemptAlertWithLockData:lockData success:^(NSArray<NSNumber *> *types, int attemptAlertCount, int lockoutDuration) {
+    NSMutableArray *unlockModes = [NSMutableArray array];
+    for (NSNumber *type in types) {
+      [unlockModes addObject:@(type.intValue)];
+    }
     NSDictionary *result = @{
       @"attemptAlertCount": @(attemptAlertCount),
       @"lockoutDuration": @(lockoutDuration),
-      @"unlockModes": types ?: @[]
+      @"unlockModes": unlockModes
     };
     [Ttlock reseponseSuccess:result success:success];
   } failure:^(TTError errorCode, NSString *errorMsg) {
@@ -1106,24 +1125,18 @@ RCT_EXPORT_METHOD(initWirelessKeypad:(NSString *)mac lockMac:(NSString *) lockMa
 
 
 #pragma mark - private method
-+ (BOOL)powerSaverWorkModeFromRNIndex:(NSInteger)index workMode:(TTPowerSaverWorkMode *)workMode {
-  switch (index) {
++ (NSNumber *)powerSaverWorkModeFromRN:(int)mode {
+  switch (mode) {
     case 0:
-      *workMode = TTPowerSaverWorkModeAllCards;
-      return YES;
-    case 1:
-      return NO;
+      return @(TTPowerSaverWorkModeAllCards);
     case 2:
-      *workMode = TTPowerSaverWorkModeHotelCard;
-      return YES;
+      return @(TTPowerSaverWorkModeHotelCard);
     case 3:
-      *workMode = TTPowerSaverWorkModeRoomCard;
-      return YES;
+      return @(TTPowerSaverWorkModeRoomCard);
     case 4:
-      *workMode = TTPowerSaverWorkModeAutoGetPower;
-      return YES;
+      return @(TTPowerSaverWorkModeAutoGetPower);
     default:
-      return NO;
+      return nil;
   }
 }
 
@@ -1305,5 +1318,6 @@ RCT_EXPORT_METHOD(initWirelessKeypad:(NSString *)mac lockMac:(NSString *) lockMa
     }
     return @(errorCode);
 }
+
 
 @end
