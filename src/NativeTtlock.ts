@@ -171,6 +171,21 @@ interface Spec extends TurboModule {
 
     enterUpgradeMode(lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
 
+    // Set power saver work mode (single).
+    setPowerSaverWorkMode(powerSaverWorkMode: number, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    // Set power saver work modes (empty array disables all).
+    setPowerSaverWorkModes(powerSaverWorkModes: number[], lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    // Set power saver controlable lock (empty mac means disassociate).
+    setPowerSaverControlableLock(controlableLockMac: string, lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    // Set unauthorized attempt alert (attemptAlertCount=0 disables).
+    setUnauthorizedAttemptAlert(attemptAlertCount: number, lockoutDuration: number, unlockModes: number[], lockData: string, success: null | (() => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
+    // Get unauthorized attempt alert config.
+    getUnauthorizedAttemptAlert(lockData: string, success: null | ((alert: Object) => void), fail: null | ((errorCode: number, description: string) => void)) : void;
+
     supportFunction(lockFunction: number, lockData: string, callback: (isSupport: boolean) => void) : void;
 
 
